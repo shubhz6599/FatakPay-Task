@@ -1,0 +1,82 @@
+<nav class="navbar navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand">Navbar</a>
+    <input type="text" placeholder="Search Products Here..." (input)="filterProducts($event)">
+    <form class="d-flex">
+      <button class="btn  btn-primary custombtn" (click)="cartFunctinality()" >View Cart</button>
+      <button class="btn  btn-secondary custombtn"  (click)="showHome()">Back</button>
+      <button (click)="checkout()" class="btn  btn-outline-success">Checkout</button>
+    </form>
+  </div>
+</nav>
+
+<div class="container pb-5 mt-n2 mt-md-n3">
+  <div class="row">
+    <div class="col-xl-12 col-m
+    d-12" *ngIf="!showCart">
+      <!-- Item-->
+      <div *ngFor="let product of productList" class="d-sm-flex justify-content-between my-4 pb-4 border-bottom mt-4">
+        <div class="media d-block d-sm-flex text-center text-sm-left">
+          <div class="cart-item-thumb mx-auto mr-sm-4" href="">
+            <img [src]="product.image" alt="Product" class="zoom" style="object-fit: contain">
+          </div>
+          <div class="media-body pt-3">
+            <h3 class="product-card-title font-weight-semibold border-0 pb-0 mx-5">
+              {{product.name}}
+            </h3>
+            <div class="font-size-sm"><span class="text-muted mr-2">Type:</span>{{product.type}}</div>
+            <div class="font-size-sm"><span class="text-muted mr-2">Color:</span>{{product.color}}</div>
+            <div class="font-size-lg text-primary pt-2">${{product.price}}</div>
+            <div *ngIf="product.totalRatings > 0">
+              <p>Ratings: {{ calculateAverageRating(product.ratings) }}</p>
+              <p>Total Number of Ratings: {{product.totalRatings}}</p>
+            </div>
+            <button class="star" (click)="rateProduct(product, 1)"><i class="fa-regular fa-star"></i></button>
+            <button class="star" (click)="rateProduct(product, 2)"><i class="fa-regular fa-star"></i></button>
+            <button class="star" (click)="rateProduct(product, 3)"><i class="fa-regular fa-star"></i></button>
+            <button class="star" (click)="rateProduct(product, 4)"><i class="fa-regular fa-star"></i></button>
+            <button class="star" (click)="rateProduct(product, 5)"><i class="fa-regular fa-star"></i></button>
+          </div>
+        </div>
+        <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 10rem;">
+          <button (click)="addToCart(product)" type="button" class="btn btn-info mt-3">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Sidebar-->
+    <div class="row">
+      <div class="col-xl-12 col-md-12 pt-3 pt-md-0 mt-5" *ngIf="showCart">
+        <h2 class="h6 px-4 py-3 bg-light text-center">Total Price</h2>
+        <div class="h3 font-weight-semibold text-center py-3">{{total | currency}}</div>
+        <hr>
+        <h3 class="h6 pt-4 font-weight-semibold">Product Preview</h3>
+
+        <div class="row justify-content-center">
+          <div class="col-md-3" *ngFor="let product of products; let i = index">
+            <div class="product-info">
+              <div class="image-container">
+                <img [src]="product?.image" alt="Product" class="product-image">
+              </div>
+              <h5 class="product-name">{{product?.name}} <span class="product-price">${{product?.price}}</span></h5>
+              <span class="text-muted product-description">Product Description</span>
+              <p class="product-description">{{product?.description}}</p>
+              <div class="d-flex align-items-center">
+                <input [(ngModel)]="product.quantity" [ngModelOptions]="{standalone: true}" min="1" type="number" value="1"
+                  class="form-control w-25 mr-2" />
+                <span class="product-total">${{ product.quantity * product?.price | number : '1.2-2'}}</span>
+              </div>
+              <button (click)="removeFromCart(product)" type="button" class="btn btn-danger mt-3">Remove from cart</button>
+              <hr />
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+
+  </div>
+</div>
